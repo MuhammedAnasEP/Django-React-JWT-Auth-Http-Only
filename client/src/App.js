@@ -1,25 +1,29 @@
-import logo from './logo.svg';
+import { BrowserRouter, Routes, Navigate, Route } from 'react-router-dom'
 import './App.css';
+import Home from './view/Home';
+import Login from './view/Auth/Login';
+import Register from './view/Auth/Register';
+import AuthMiddleware from './middleware/Auth'; // Reaname middle  ware
+import User from './view/Auth/User';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    <Routes>
+      <Route path='/' exact element={<Home />}>
+
+      </Route>
+      <Route path='/auth'>
+        <Route path='login' element={<Login />}></Route>
+        <Route path='register' element={<Register />}></Route>
+
+        {/* protect user page with AuthMiddleware */}
+        <Route path='user' element={<AuthMiddleware />}>
+          <Route index element={<User />}></Route>
+        </Route>
+
+      </Route>
+      <Route path='*' element={<Navigate to='/' />}></Route>
+    </Routes>
+)}
 
 export default App;
